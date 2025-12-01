@@ -9,6 +9,14 @@ pipeline {
     }
 
     stages {
+        stage('Checkout Source Code') {
+            steps {
+                // Checkout the source code from the Git repository
+                git branch: 'develop', // Or your specific branch, e.g., 'develop'
+                    //credentialsId: 'your-git-credentials-id', // ID of your stored Jenkins credentials
+                    url: 'https://github.com/shyamjava/demoservice.git' // URL of your Git repository
+            }
+        }
         stage('Build') {
             steps {
                 // Cleans, compiles, and packages the Java application using Maven, skipping tests for faster build
