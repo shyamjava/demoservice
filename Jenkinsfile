@@ -3,9 +3,9 @@ pipeline {
 
     tools {
         // Defines the Maven tool to use, ensure 'maven-3' matches the name configured in Jenkins Global Tool Configuration
-        maven 'maven-3'
+        maven 'Maven-3.9.11'
         // Defines the JDK to use, ensure 'jdk-11' matches the name configured in Jenkins Global Tool Configuration
-        jdk 'jdk-21' 
+        jdk 'amazon-jdk-21' 
     }
 
     stages {
@@ -20,14 +20,14 @@ pipeline {
         stage('Build') {
             steps {
                 // Cleans, compiles, and packages the Java application using Maven, skipping tests for faster build
-                sh 'mvn -B -DskipTests clean package'
+               bat 'mvn -B -DskipTests clean package'
             }
         }
 
         stage('Test') {
             steps {
                 // Runs the unit tests using Maven
-                sh 'mvn test'
+               bat 'mvn test'
             }
             post {
                 always {
@@ -40,14 +40,14 @@ pipeline {
         stage('Package') {
             steps {
                 // Packages the application into a JAR or WAR file
-                sh 'mvn package'
+               bat 'mvn package'
             }
         }
 
       stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('local-sonarqube') { // Replace with your configured SonarQube server name
-                    sh 'mvn sonar:sonar -Dsonar.projectKey=demoservice -Dsonar.java.binaries="target/classes" -Dsonar.sources=src/main/java'
+                   bat 'mvn sonar:sonar -Dsonar.projectKey=demoservice -Dsonar.java.binaries="target/classes" -Dsonar.sources=src/main/java'
                     // Add other SonarQube properties as needed
                 }
             }
